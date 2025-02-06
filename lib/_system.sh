@@ -32,12 +32,15 @@ system_git_clone() {
   printf "${WHITE} 💻 Fazendo download do código Ultravita...${GRAY_LIGHT}"
   printf "\n\n"
 
-
   sleep 2
 
-  sudo su - deploy <<EOF
+  if ! sudo su - deploy <<EOF
   git clone ${link_git} /home/deploy/${instancia_add}/
 EOF
+  then
+    printf "${RED} ❌ Erro ao clonar o repositório. Verifique o link do GitHub e tente novamente.${NC}"
+    exit 1
+  fi
 
   sleep 2
 }
@@ -83,20 +86,18 @@ deletar_tudo() {
   cd && rm -rf /etc/nginx/sites-available/${empresa_delete}-frontend
   cd && rm -rf /etc/nginx/sites-available/${empresa_delete}-backend
   
-  sleep 2
-
-  sudo su - postgres
+  sudo su - postgres <<PSQL
   dropuser ${empresa_delete}
   dropdb ${empresa_delete}
-  exit
+PSQL
 EOF
 
-sleep 2
+  sleep 2
 
-sudo su - deploy <<EOF
- rm -rf /home/deploy/${empresa_delete}
- pm2 delete ${empresa_delete}-frontend ${empresa_delete}-backend
- pm2 save
+  sudo su - deploy <<EOF
+  rm -rf /home/deploy/${empresa_delete}
+  pm2 delete ${empresa_delete}-frontend ${empresa_delete}-backend
+  pm2 save
 EOF
 
   sleep 2

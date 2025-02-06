@@ -6,6 +6,16 @@ get_mysql_root_password() {
   printf "${WHITE} 💻 Insira senha para o usuario Deploy e Banco de Dados (Não utilizar caracteres especiais):${GRAY_LIGHT}"
   printf "\n\n"
   read -p "> " mysql_root_password
+  
+  if [[ -z "$mysql_root_password" ]]; then
+    printf "${RED} ❌ A senha não pode estar vazia${NC}"
+    get_mysql_root_password
+  fi
+  
+  if [[ "$mysql_root_password" =~ [^a-zA-Z0-9] ]]; then
+    printf "${RED} ❌ A senha não pode conter caracteres especiais${NC}"
+    get_mysql_root_password
+  fi
 }
 
 get_link_git() {
@@ -62,8 +72,12 @@ get_frontend_port() {
   printf "${WHITE} 💻 Digite a porta do FRONTEND para a ${instancia_add}; Ex: 3000 A 3999 ${GRAY_LIGHT}"
   printf "\n\n"
   read -p "> " frontend_port
+  
+  if ! [[ "$frontend_port" =~ ^[0-9]+$ ]] || [ "$frontend_port" -lt 3000 ] || [ "$frontend_port" -gt 3999 ]; then
+    printf "${RED} ❌ Por favor, digite um número entre 3000 e 3999${NC}"
+    get_frontend_port
+  fi
 }
-
 
 get_backend_port() {
   
@@ -71,6 +85,11 @@ get_backend_port() {
   printf "${WHITE} 💻 Digite a porta do BACKEND para esta instancia; Ex: 4000 A 4999 ${GRAY_LIGHT}"
   printf "\n\n"
   read -p "> " backend_port
+  
+  if ! [[ "$backend_port" =~ ^[0-9]+$ ]] || [ "$backend_port" -lt 4000 ] || [ "$backend_port" -gt 4999 ]; then
+    printf "${RED} ❌ Por favor, digite um número entre 4000 e 4999${NC}"
+    get_backend_port
+  fi
 }
 
 get_redis_port() {
@@ -79,6 +98,11 @@ get_redis_port() {
   printf "${WHITE} 💻 Digite a porta do REDIS/AGENDAMENTO MSG para a ${instancia_add}; Ex: 5000 A 5999 ${GRAY_LIGHT}"
   printf "\n\n"
   read -p "> " redis_port
+  
+  if ! [[ "$redis_port" =~ ^[0-9]+$ ]] || [ "$redis_port" -lt 5000 ] || [ "$redis_port" -gt 5999 ]; then
+    printf "${RED} ❌ Por favor, digite um número entre 5000 e 5999${NC}"
+    get_redis_port
+  fi
 }
 
 get_empresa_delete() {
