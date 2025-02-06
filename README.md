@@ -29,9 +29,4 @@ Email válido para certificação SSL
 ## Consultoria e contato:
 
     Ultravita LTDA
-
-
-Copia e cola:
-
-    00020126360014BR.GOV.BCB.PIX0114+55819962772855204000053039865802BR5924Raphael Batista da silva6009SAO PAULO610805409000622305190WFy6iqYAgBMQNdtcgc630407B3
     
